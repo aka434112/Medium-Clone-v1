@@ -1,4 +1,4 @@
-# sensehawk
+# Medium clone v1
 
 > A Vue.js project
 
