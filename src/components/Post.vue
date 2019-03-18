@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-layout row wrap>
         <div id="tooltip" v-show="tooltip"><i class="fa fa-pencil" @mousedown.stop="highlight()" aria-hidden="true"></i></div>
         <v-dialog v-model="dialogEdit" persistent max-width="600px">
           <v-card>
@@ -30,21 +30,21 @@
             </v-card-actions>
             </v-card>
         </v-dialog>
-        <v-card>
-          <v-card-title>
-            <div>
-              <div class="text-xs-left title"><div id="title" @mouseup.self="getSelectionText($event)" v-html="post.title"></div></div>
-              <div class="author text-xs-left"><span id="author" @mouseup.self="getSelectionText($event)" v-html="post.author"></span></div>
-              <div class="content text-xs-left"><div id="content" @mouseup.self="getSelectionText($event)" v-html="post.content"></div></div>
-            </div>
-          </v-card-title>
-          <v-card-actions>
-            <v-btn flat color="orange" @click="dialogEdit = !dialogEdit">Edit Post <v-icon>edit</v-icon></v-btn>
-            <v-btn flat color="orange" @click="deletePost(post.ID)">Delete Post <v-icon>delete</v-icon></v-btn>
-            <v-btn flat color="orange" to="/">Go back <v-icon>arrow_back</v-icon></v-btn>
-          </v-card-actions>
-        </v-card>
-    </div>
+        <v-flex xs12>
+            <v-card>
+                <v-card-title>
+                    <div>
+                    <div class="text-xs-left title"><div id="title" @mouseup.self="getSelectionText($event)" v-html="post.title"></div></div>
+                    <div class="author text-xs-left"><span id="author" @mouseup.self="getSelectionText($event)" v-html="post.author"></span></div>
+                    <div class="content text-xs-left"><div id="content" @mouseup.self="getSelectionText($event)" v-html="post.content"></div></div>
+                    </div>
+                </v-card-title>
+                    <v-btn flat color="orange" @click="dialogEdit = !dialogEdit">Edit Post <v-icon>edit</v-icon></v-btn>
+                    <v-btn flat color="orange" @click="deletePost(post.ID)">Delete Post <v-icon>delete</v-icon></v-btn><br/>
+                    <v-btn flat color="orange" to="/">Go back <v-icon>arrow_back</v-icon></v-btn>
+            </v-card>
+        </v-flex>
+    </v-layout>
 </template>
 
 <script>

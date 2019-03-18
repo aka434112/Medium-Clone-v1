@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-layout row wrap>
       <v-flex xs12>
         <v-card>
           <v-card-title>
@@ -11,7 +11,7 @@
           </v-card-title>
         </v-card>
       </v-flex>
-    </div>
+    </v-layout>
 </template>
 
 <script>
