@@ -10,7 +10,8 @@ const store = new Vuex.Store({
           {"title":"luctus venenatis", "author":"By Kumar", "content":"Adipiscing elit ut aliquam purus sit amet luctus venenatis. Nulla facilisi nullam vehicula ipsum a arcu. Purus ut faucibus pulvinar elementum integer enim neque volutpat. Risus pretium quam vulputate dignissim suspendisse in est. Sed viverra tellus in hac habitasse platea. Quis lectus nulla at volutpat diam ut venenatis tellus in. Arcu vitae elementum curabitur vitae. At auctor urna nunc id cursus metus. Lectus urna duis convallis convallis. Pharetra diam sit amet nisl suscipit adipiscing bibendum est. Sed felis eget velit aliquet.", "ID":"2"}
         ],
         highlightedWords: [],
-        searchFilter: ""
+        searchFilter: "",
+        postID: 2
     },
     mutations: {
         DeletePost: function(state, payload){
@@ -30,10 +31,15 @@ const store = new Vuex.Store({
             state.posts.push(payload);           
         },
         addWord: function(state, payload){
-            state.highlightedWords.push(payload);
+            if(state.highlightedWords.indexOf(payload) < 0){
+                state.highlightedWords.push(payload);
+            }
         },
         editFilter: function(state, payload){
             state.searchFilter = payload
+        },
+        incrementPostID: function(state, payload){
+            state.postID+=1
         }
     },
     actions: {
@@ -51,12 +57,16 @@ const store = new Vuex.Store({
         },
         editFilter: function(context, payload){
             context.commit("editFilter", payload)
+        },
+        incrementPostID: function(context, payload){
+            context.commit("incrementPostID")
         }
     },
     getters: {
         posts: state => state.posts,
         highlightedWords: state => state.highlightedWords,
-        searchFilter: state => state.searchFilter 
+        searchFilter: state => state.searchFilter,
+        PostID: state => state.postID
     }
   })
 

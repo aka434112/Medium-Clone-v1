@@ -87,6 +87,7 @@ export default {
 }
 a {
   text-decoration: none;
+  color: orange !important;
 }
 .title{
   font-size: 16px;

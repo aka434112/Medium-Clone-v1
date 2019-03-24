@@ -6,6 +6,7 @@
             <div class="text-xs-left">
               <div class="title">Highlighted Words</div>
               <br/>
+              <p v-if="words.length === 0">(Empty)</p>
               <v-btn class="tag" flat color="orange" v-for="word in words"><span @click="goToPosts($event)" :id="word">{{word}}</span></v-btn>
             </div>
           </v-card-title>

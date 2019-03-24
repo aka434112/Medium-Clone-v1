@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
-import Post from '@/components/Post'
-import highlighted from '@/components/highlighted'
-import filterPosts from '@/components/filterPosts'
+const HelloWorld = () => import (/* webpackChunkName: "home" */ '@/components/HelloWorld')
+const Post = () => import (/* webpackChunkName: "post" */ '@/components/Post')
+const highlighted = () => import (/* webpackChunkName: "highlightedWords" */ '@/components/highlighted')
+const filterPosts = () => import (/* webpackChunkName: "filterPosts" */ '@/components/filterPosts')
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',

@@ -1,6 +1,6 @@
 <template>
     <v-layout row wrap>
-        <div id="tooltip" v-show="tooltip"><i class="fa fa-pencil" @mousedown.stop="highlight()" aria-hidden="true"></i></div>
+        <div id="tooltip" v-show="tooltip"><i title="Highlight text" class="fa fa-pencil" @mousedown.stop="highlight()" aria-hidden="true"></i></div>
         <v-dialog v-model="dialogEdit" persistent max-width="600px">
           <v-card>
             <v-card-title>
@@ -34,12 +34,12 @@
             <v-card>
                 <v-card-title>
                     <div>
-                    <div class="text-xs-left title"><div id="title" @mouseup.self="getSelectionText($event)" v-html="post.title"></div></div>
-                    <div class="author text-xs-left"><span id="author" @mouseup.self="getSelectionText($event)" v-html="post.author"></span></div>
-                    <div class="content text-xs-left"><div id="content" @mouseup.self="getSelectionText($event)" v-html="post.content"></div></div>
+                    <div class="text-xs-left title"><div id="title" @mouseup.self="getSelectionText($event)"></div>{{post.title.replace(/<[^>]*>/g, '')}}</div>
+                    <div class="author text-xs-left"><span id="author" @mouseup.self="getSelectionText($event)">{{post.author.replace(/<[^>]*>/g, '')}}</span></div>
+                    <div class="content text-xs-left"><div id="content" @mouseup.self="getSelectionText($event)">{{post.content.replace(/<[^>]*>/g, '')}}</div></div>
                     </div>
                 </v-card-title>
-                    <v-btn flat color="orange" @click="dialogEdit = !dialogEdit">Edit Post <v-icon>edit</v-icon></v-btn>
+                    <v-btn flat color="orange" @click="dialogEdit = !dialogEdit">Edit Post (as HTML) <v-icon>edit</v-icon></v-btn>
                     <v-btn flat color="orange" @click="deletePost(post.ID)">Delete Post <v-icon>delete</v-icon></v-btn><br/>
                     <v-btn flat color="orange" to="/">Go back <v-icon>arrow_back</v-icon></v-btn>
             </v-card>
@@ -89,7 +89,7 @@ export default {
                 this.text = text
                 if (text !== "" && text !== null && text !== undefined){
                     var container = document.getElementById(event.target.id)
-                    this.getSelectionCharacterOffsetWithin(container)
+                    // this.getSelectionCharacterOffsetWithin(container)
                     this.element = event.path[0].id
                     textCheck = (/^[a-zA-Z0-9]+$/).test(text)
                 }
@@ -106,42 +106,42 @@ export default {
                 this.tooltip = false
             }
         },
-        getSelectionCharacterOffsetWithin(element) {
-            var start = 0;
-            var end = 0;
-            var doc = element.ownerDocument || element.document;
-            var win = doc.defaultView || doc.parentWindow;
-            var sel;
-            if (typeof win.getSelection != "undefined") {
-                sel = win.getSelection();
-                if (sel.rangeCount > 0) {
-                    var range = win.getSelection().getRangeAt(0);
-                    var preCaretRange = range.cloneRange();
-                    preCaretRange.selectNodeContents(element);
-                    preCaretRange.setEnd(range.startContainer, range.startOffset);
-                    start = preCaretRange.toString().length;
-                    preCaretRange.setEnd(range.endContainer, range.endOffset);
-                    end = preCaretRange.toString().length;
-                }
-            } else if ( (sel = doc.selection) && sel.type != "Control") {
-                var textRange = sel.createRange();
-                var preCaretTextRange = doc.body.createTextRange();
-                preCaretTextRange.moveToElementText(element);
-                preCaretTextRange.setEndPoint("EndToStart", textRange);
-                start = preCaretTextRange.text.length;
-                preCaretTextRange.setEndPoint("EndToEnd", textRange);
-                end = preCaretTextRange.text.length;
-            }
-            console.log(start, end)
-            this.start = start
-            this.end = end
-        },
+        // getSelectionCharacterOffsetWithin(element) {
+        //     var start = 0;
+        //     var end = 0;
+        //     var doc = element.ownerDocument || element.document;
+        //     var win = doc.defaultView || doc.parentWindow;
+        //     var sel;
+        //     if (typeof win.getSelection != "undefined") {
+        //         sel = win.getSelection();
+        //         if (sel.rangeCount > 0) {
+        //             var range = win.getSelection().getRangeAt(0);
+        //             var preCaretRange = range.cloneRange();
+        //             preCaretRange.selectNodeContents(element);
+        //             preCaretRange.setEnd(range.startContainer, range.startOffset);
+        //             start = preCaretRange.toString().length;
+        //             preCaretRange.setEnd(range.endContainer, range.endOffset);
+        //             end = preCaretRange.toString().length;
+        //         }
+        //     } else if ( (sel = doc.selection) && sel.type != "Control") {
+        //         var textRange = sel.createRange();
+        //         var preCaretTextRange = doc.body.createTextRange();
+        //         preCaretTextRange.moveToElementText(element);
+        //         preCaretTextRange.setEndPoint("EndToStart", textRange);
+        //         start = preCaretTextRange.text.length;
+        //         preCaretTextRange.setEndPoint("EndToEnd", textRange);
+        //         end = preCaretTextRange.text.length;
+        //     }
+        //     console.log(start, end)
+        //     this.start = start
+        //     this.end = end
+        // },
         highlight () {
             let text = this.text
             let that = this
             if (text !== "" && text !== null && text != undefined){
                 document.designMode = "on";
-                document.execCommand('bold', false, null);
+                document.execCommand("BackColor", false, "#f8e815");
                 document.designMode = "off";
                 that.$store.dispatch("addWord", text)
                 that.post[that.element] = document.getElementById(that.element).innerHTML

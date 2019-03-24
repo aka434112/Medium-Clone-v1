@@ -5,6 +5,7 @@ const webpack = require('webpack')
 const config = require('../config')
 const merge = require('webpack-merge')
 const baseWebpackConfig = require('./webpack.base.conf')
+const WorkboxPlugin = require('workbox-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
@@ -115,7 +116,26 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    new WorkboxPlugin.GenerateSW({
+      // Exclude images from the precache
+      exclude: [/\.(?:html|css|js|svg)$/],
+
+      // Define runtime caching rules.
+      runtimeCaching: [{
+        urlPattern: /https:\/\/medium-clone-v1.firebaseapp.com/,
+        handler: 'StaleWhileRevalidate',
+        options: {
+          // Use a custom cache name.
+          cacheName: 'mediumCloneCache',
+
+          expiration: {
+            maxEntries: 20,
+            maxAgeSeconds: 3600
+          },
+        },
+      }],
+    })
   ]
 })
 

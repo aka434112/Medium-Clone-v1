@@ -6,7 +6,7 @@
           <v-card-title>
             <div class="text-xs-left">
               <div  class="title" v-html="post.title"></div>
-              <div  class="author" v-html="post.author">}</div><br/>
+              <div  class="author" v-html="post.author"></div><br/>
               <div class="content postContent" v-html="post.content"></div>
             </div>
           </v-card-title>
@@ -37,9 +37,29 @@ export default {
   computed: {
     posts: function () {
       let that = this
-      return that.$store.getters.posts.filter((obj)=>{
+      let postsArray = JSON.parse(JSON.stringify( that.$store.getters.posts ))
+      postsArray = postsArray.filter((obj)=>{
           return obj.author.includes(that.$store.getters.searchFilter) || obj.content.includes(that.$store.getters.searchFilter) ||obj.title.includes(that.$store.getters.searchFilter)
       })
+      let query = '<span style="background-color: rgb(248, 232, 21);">'+that.$store.getters.searchFilter+"</span>"
+      let length = query.length
+      postsArray.forEach(function(element){
+        if(element.content.includes(query)){
+          let position = element.content.indexOf(query)
+          element.content = element.content.substr(0, position).replace(/<[^>]*>/g, '')+query+element.content.substr(position+length).replace(/<[^>]*>/g, '')
+          if(position>=200){
+            element.content = element.content.substr(position-200)
+          }
+        }
+        else if(element.content.includes(that.$store.getters.searchFilter)){
+          let position = element.content.indexOf(that.$store.getters.searchFilter)
+          element.content = element.content.substr(0, position).replace(/<[^>]*>/g, '')+'<span style="background-color: rgb(248, 232, 21);">'+query+"</span>"+element.content.substr(position+that.$store.getters.searchFilter.length).replace(/<[^>]*>/g, '')
+          if(position>=200){
+            element.content = element.content.substr(position-200)
+          }
+        }
+      })
+      return postsArray
     }
   },
   methods: {

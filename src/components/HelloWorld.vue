@@ -33,14 +33,14 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <v-flex xs11>
+      <v-flex xs12>
       <div v-for="post in posts">
         <v-card>
           <v-card-title>
             <div class="text-xs-left">
-              <div  class="title" v-html="post.title"></div>
-              <div  class="author" v-html="post.author">}</div><br/>
-              <div class="content postContent" v-html="post.content"></div>
+              <div class="title">{{post.title.replace(/<[^>]*>/g, '')}}</div>
+              <div class="author">{{post.author.replace(/<[^>]*>/g, '')}}</div><br/>
+              <div class="content postContent">{{post.content.replace(/<[^>]*>/g, '')}}</div>
             </div>
           </v-card-title>
           <v-card-actions>
@@ -75,6 +75,7 @@ export default {
   methods: {
     addPost () {
       this.postID += 1
+      this.$store.dispatch("incrementPostID")
       let post = {"author": 'By '+this.author, "content": this.content, "title": this.title, "ID": this.postID}
       this.$store.dispatch("addPost", post);
       this.content = ""
@@ -85,6 +86,9 @@ export default {
     goToPost (postID) {
       this.$router.push('/post/'+postID)
     }
+  },
+  created () {
+    this.postID = this.$store.getters.PostID
   }
 }
 </script>
