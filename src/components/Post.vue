@@ -36,7 +36,7 @@
                     <div>
                     <div class="text-xs-left title"><div id="title" @mouseup.self="getSelectionText($event)"></div>{{post.title.replace(/<[^>]*>/g, '')}}</div>
                     <div class="author text-xs-left"><span id="author" @mouseup.self="getSelectionText($event)">{{post.author.replace(/<[^>]*>/g, '')}}</span></div>
-                    <div class="content text-xs-left"><div id="content" @mouseup.self="getSelectionText($event)">{{post.content.replace(/<[^>]*>/g, '')}}</div></div>
+                    <div class="content text-xs-left"><div id="content" @mouseup.self="getSelectionText($event)" v-html="post.content"></div></div>
                     </div>
                 </v-card-title>
                     <v-btn flat color="orange" @click="dialogEdit = !dialogEdit">Edit Post (as HTML) <v-icon>edit</v-icon></v-btn>
